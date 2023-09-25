@@ -2,12 +2,18 @@ import { useState } from 'react';
 import './style.scss';
 
 function App() {
-	const [Name, setName] = useState('David');
+	const [Colors, setColors] = useState(['red', 'green', 'blue']);
+	const newColors = [...Colors];
+	newColors[0] = 'hotpink';
 
 	return (
 		<>
-			<h1>{Name}</h1>
-			<button onClick={() => setName('Andy')}>이름변경</button>
+			{Colors.map((color, idx) => (
+				<button style={{ backgroundColor: color }} key={idx}>
+					{color}
+				</button>
+			))}
+			<button onClick={() => setColors(newColors)}>색상변경</button>
 		</>
 	);
 }
