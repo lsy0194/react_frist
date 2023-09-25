@@ -4,7 +4,27 @@ import Popup from './components/Popup';
 import List from './components/List';
 import './style.scss';
 
+//원시형자료는 : 메모리 값자체가 callstack에서 생성된 다음에 저장
+//원시형자료는 변수값을 다른 변수에 복사했을때 값 자체가 복사되는 deep copy;
+//복사된 값을 변경해도 원본은 그대로 유지되는 불변성 유지(immutable);
+
+//참조형 자료는 : 메모리(callstack),배열,객체등의 값자체는 (heap memory) 생성돔
+//callstack에 있는 메모리에는 배열의 값 자체가 아닌  heap memory에 있는 값에 위치값이 담김
+//참조링크가 담겨있는 변수를 새로운 변수에 옮겨담으면 값이 복사는것이 참조 링크만 복사됨
+//결국 같은값을 가리키고 있는 두개의링크만 복사가 됨
+//복사가 된 링크의 값을 바꾸면 결국원본값이 회손됨(shallow copy) 불변성 유지 안됨
+
+//리엑트 개발시 불션성이 중요한이유
+//리엑트는 원본이 있어야 복사본을 통해서 차이점을 비교분석
+//리엑트에서 배열이나 객체같은 참조형 자료는 무조건 deep copy를 해서 데이터를 변경해야함
+
 function App() {
+	let arr = ['reading', 'game', 'cook'];
+	let newArr = arr;
+	newArr[0] = 'exercise';
+	console.log(newArr);
+	console.log(arr);
+
 	let isPop = true;
 	let isFooter = true;
 	return (
