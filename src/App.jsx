@@ -1,19 +1,14 @@
-import { useState } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 import './style.scss';
+import Popup from './components/Popup';
 
 function App() {
-	const [Colors, setColors] = useState(['red', 'green', 'blue']);
-	const newColors = [...Colors];
-	newColors[0] = 'hotpink';
-
+	const [Opne, setOpne] = useState(false);
 	return (
 		<>
-			{Colors.map((color, idx) => (
-				<button style={{ backgroundColor: color }} key={idx}>
-					{color}
-				</button>
-			))}
-			<button onClick={() => setColors(newColors)}>색상변경</button>
+			<button onClick={() => setOpne(true)}>팝업열기</button>
+			<button onClick={() => setOpne(false)}>팝업닫기</button>
+			{Opne && <Popup />}
 		</>
 	);
 }
