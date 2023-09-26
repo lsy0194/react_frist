@@ -1,5 +1,11 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
+//uesEffect:컴포넌트 생성,변화,소멸의 특정 상태마다 원하는 이벤트를 연결가능
+//useEffect(실행할함수,의존성배열)
+//의존성배열이 비어있는 상태에서 함수안쪽에 구문을 입력하면 (컴포넌트 마운트시 한번만 실행)
+//의존성배열이 비어있는 상태에서 리턴되는 함수 안쪽에 구문을 입력하면 (컴포넌트 언마운트시 한번만 실행)
+//의존성배열에 특정 state를 담아두고 함수 안쪽에 구문을 입력하면 (해당 state값이 변경돨때마다 실행)
+
 function Popup() {
 	const [Num, setNum] = useState(0);
 	useEffect(() => {
