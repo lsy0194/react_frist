@@ -1,36 +1,45 @@
-import { useState, useSyncExternalStore } from 'react';
+import { useRef, useState } from 'react';
 import './style.scss';
-import Popup from './components/Popup';
 
 function App() {
-	const [Opne, setOpne] = useState(false);
+	console.log('re-render');
+	//회전값에 적용할 증가하거나 감소할 숫자값을 Num이라는 빈 참조객체에 저장
+	//해당 값이 바뀌더라도 컴포넌트를 재랜더링 하지 않기 위함
+	let Num = useRef(0);
+	//가상돔인 article요소를 담기위한 빈 참조객체 생성
+	//아직 실제적으로 만들어지 않은 돔을 임의로 담아서 이벤트호출할때 불러오기 위함
+	let Box = useRef(null);
+	console.log(Num);
+	const prev = () => {
+		//Box.current에는 아직 생성되지 않은 가상돔 상태인 article을 가져와서 Num값이 변경될떄마다 style 적용
+		//이때 Num값 자체가 state가 아닌 useRef로 담아놓은 값이때문에 해당 값이 변경되더라도 컴포넌트가 재랜더링 되지 않음
+		Box.current.style.transform = `rotate(${--Num.current * 45}deg)`;
+	};
+
+	const next = () => {
+		Box.current.style.transform = `rotate(${++Num.current * 45}deg)`;
+	};
+
 	return (
 		<>
-			<button onClick={() => setOpne(true)}>팝업열기</button>
-			<button onClick={() => setOpne(false)}>팝업닫기</button>
-			{Opne && <Popup />}
+			<button onClick={prev}>Prev</button>
+			<button onClick={next}>next</button>
+
+			<article ref={Box}></article>
 		</>
 	);
 }
 
 export default App;
+/* 
+	state: 해당 값이 변경되면 무조건 컴포넌트 재랜더링됨, 이전랜더링 사이클의 값이 유지됨
+	변수: 컴포넌트 안에 값을 만듬, 컴포넌트가 재랜더링 될때마다 값이 계속 초기화됨
+	useRef: useRef를 통해서 참조객체를 만들고 해당 참조객체에 저장되어 있는 값은 컴포넌트가 재랜더링되더라도 값이 유지됨
+	단 useRef의 값이 변경이 되더라도 컴포넌트가 재랜더리되지 않음
 
-/*
-	hooks
-	-리액트 16버전부터 새로나온 개념으로 리액트에서 자주쓰이는 상태관리, 생명주기에 관련된 내용들을 
-	-hook이라는 형태의 내장함수로 편의기능을 제공
-	-hook이 나오기 전까지는 class방식으로 컴포넌트를 생성 및 기능확장을 비효율적으로 처리
+	useRef실사용 사례1
+	-모션작업을 할때 특정 스타일 변경되더라도 컴포넌트를 불필요하게 재호출하고 싶지 않을때
+	useRef실사용 사례2
+	-가상돔요소를 실제로 선택해서 가져와야 될때
 
-	자주쓰는 hook 3대장
-	useState - 컴포넌트에서 화면의 렌더링을 담당하는 중요한 정보값을 관리
-	useEffect - 컴포넌트의 생명주기에 관련된 함수 (생성,변화,소멸)
-	useRef - 컴포넌트 안쪽에서 특정 값을 참조객체에 담을때
-
-	리액트 성능관리를 hook
-	리액트에서의 memoization - 메모리점유율을 늘려서 성능을 개선
-	자바스크립트는 기본적으로 Garbage collector에 의해서 메모리가 관리됨
-	아래의 hook을 통해서 특정값을 강제 메모이제이션 처리하면 가비지컬렉터에서 제외함
-	memo (컴포넌트 자체를 메모이제이션)
-	useCallback (컴포넌트 안쪽의 핸들러 함수 자체를 메모이제이션)
-	useMemo (특정 핸들러함수의 리턴값을 메모이제이션)
 */
